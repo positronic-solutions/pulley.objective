@@ -1,0 +1,79 @@
+* What is =pulley=?
+  =pulley= is the Positronic utility libraries.
+  It is a collection of relatively small, simple libraries
+  developed by [[http://www.positronic-solutions.com][Positronic Solutions, LLC]].
+* What is =pulley.objective=?
+  =pulley.objective= is an object library for Clojure.
+  Inspired by Python, it provides an alternative to native Java objects.
+  Just as Python objects are based on python ~dict~'s,
+  objects in =pulley.objective= are based on persistent maps.
+
+  Unlike Python, =pulley.objective= maintains Clojure's policy
+  of utilizing persistent data types.
+  That is, an object in =pulley.objective= is immutable.
+* Status
+  ~pulley.object~ is considered pre-alpha.
+  Only the most rudimentary features have been implemented so far,
+  and are subject to major changes in both implementation and interface.
+* ~PersistentObject~
+  Objects in =pulley.objective= are implemented
+  by the ~pulley.objective.PersistentObject~ class.
+  ~PersistentObject~ provides a map-compatible interface
+  that differs from Clojure's ~PersistentHashMap~/~PersistentSortedMap~
+  in the following ways:
+
+  * When used as a function, a ~PersistentObject~ expects a key (attribute).
+    If only the key is provided,
+    the value associated with the attribute is retured.
+    If additional parameters are provided,
+    the associated value is called
+    with the additional parameters passed as arguments.
+    This enables two key patterns:
+    * Method invocation:
+
+      #+begin_src clojure
+        (an-object ::foo-method param1 param2)
+      #+end_src
+
+      This is really just a more convenient way to write:
+
+      #+begin_src clojure
+        ((an-object ::foo-method) param1 param2)
+      #+end_src
+
+    * Lookup of nested attributes:
+
+      #+begin_src clojure
+        (an-object ::foo ::bar)
+      #+end_src
+
+      This is really just a specialization of the "method invocation" pattern.
+      ~::foo~ will first be looked up on ~an-object~.
+      If ~::foo~ maps to another ~PeristentObject~,
+      then that object will be called with parameter ~::bar~,
+      resulting in the lookup of ~::bar~.
+
+  * When lookup fails, ~PersistentObject~ throws an exception
+    rather than returning ~nil~.
+    This is in-line with Python semantics,
+    and makes it easier to distinguish between a missing attribute
+    and an attribute whose value is ~nil~.
+* Constructing Objects
+  Objects are constructed via the ~map->object~ function.
+  ~map->object~ expects a single argument — a map of attributes to values:
+
+  #+begin_src clojure
+    (map->object {::foo "this is the foo attribute"
+                  ::bar (fn [& args]
+                          (println "You invoked the bar method with the following arguments: " args))})
+  #+end_src
+
+  In the future, additonal arguments may be added for things such as:
+  * Superclass(es)
+  * Metaclass
+  * Additional metadata affecting object creation / features
+
+  It is recommended (but not required)
+  that you use namespace-qualified keywords for attribute names.
+  This will help ensure names do not collide.
+  However, any valid map key can be used.
