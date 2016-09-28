@@ -36,7 +36,7 @@
   (seq [self]
     (seq attrs))
   (valAt [self k]
-    (self self k nil))
+    (get attrs k))
   (valAt [self k default]
     (get attrs k default))
 
