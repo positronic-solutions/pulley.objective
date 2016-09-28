@@ -50,47 +50,47 @@
       (get self k)
       (throw (new IllegalArgumentException (str "Attribute not found: " k)))))
   (invoke [self k arg]
-    ((self k) self arg))
+    ((self k) arg))
   (invoke [self k arg1 arg2]
-    ((self k) self arg1 arg2))
+    ((self k) arg1 arg2))
   (invoke [self k arg1 arg2 arg3]
-    ((self k) self arg1 arg2 arg3))
+    ((self k) arg1 arg2 arg3))
   (invoke [self k arg1 arg2 arg3 arg4]
-    ((self k) self arg1 arg2 arg3 arg4))
+    ((self k) arg1 arg2 arg3 arg4))
   (invoke [self k arg1 arg2 arg3 arg4 arg5]
-    ((self k) self arg1 arg2 arg3 arg4 arg5))
+    ((self k) arg1 arg2 arg3 arg4 arg5))
   (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6))
+    ((self k) arg1 arg2 arg3 arg4 arg5 arg6))
   (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6 arg7))
+    ((self k) arg1 arg2 arg3 arg4 arg5 arg6 arg7))
   (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8))
+    ((self k) arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8))
   (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9))
+    ((self k) arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9))
   (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10))
+    ((self k) arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10))
   (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11))
+    ((self k) arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11))
   (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12))
+    ((self k) arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12))
   (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13))
+    ((self k) arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13))
   (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14))
+    ((self k) arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14))
   (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15))
+    ((self k) arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15))
   (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16))
+    ((self k) arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16))
   (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16 arg17]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16 arg17))
+    ((self k) arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16 arg17))
   (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16 arg17 arg18]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16 arg17 arg18))
+    ((self k) arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16 arg17 arg18))
   (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16 arg17 arg18 arg19]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16 arg17 arg18 arg19))
-  (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16 arg17 arg18 arg19 arg20]
-    ((self k) self arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16 arg17 arg18 arg19 arg20))
+    ((self k) arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16 arg17 arg18 arg19))
+  (invoke [self k arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16 arg17 arg18 arg19 args]
+    (apply (self k) arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10 arg11 arg12 arg13 arg14 arg15 arg16 arg17 arg18 arg19 args))
   (applyTo [self args]
-    (clojure.lang.AFn/applyToHelper self (cons self args))))
+    (clojure.lang.AFn/applyToHelper self args)))
 
 (defn- object- [attrs]
   (new PersistentObject attrs))
