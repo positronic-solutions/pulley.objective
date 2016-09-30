@@ -1,6 +1,6 @@
-(ns pulley.objective-test
+(ns com.positronic-solutions.pulley.objective-test
   (:require [clojure.test :refer :all]
-            [pulley.objective :refer :all]))
+            [com.positronic-solutions.pulley.objective :refer :all]))
 
 (deftest test-attr-lookup
   (let [obj1 (map->object {::foo "foo"
