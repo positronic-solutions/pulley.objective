@@ -88,6 +88,7 @@
   Properties allow the value of an attribute to be calculated.
   For instance, you could calculate a value from other attributes
   on an object.
+  Properties are also used to implement Objective [[methods][methods]].
 
   Properties are constructed via the ~property~ function:
 
@@ -153,3 +154,104 @@
      though they will likely be added in the near future.
      Property deletion (Python's ~__delete__~ "magic method")
      is also not supported at the moment.
+* Methods
+  :PROPERTIES:
+  :CUSTOM_ID: methods
+  :END:
+
+  While any function on an object can be invoked as a method,
+  such a function will not have access
+  to the object on which is was invoked (i.e., Java's ~this~).
+  If you need access to this object,
+  you can use the ~method~ macro.
+  Such a method can access other attributes and invoke other methods
+  on the object.
+
+  For example, here's a method that returns the sum
+  of its arguments and the ~::foo~ attribute.
+
+  #+name: examples/method
+  #+begin_src clojure
+    (method [self & xs]
+      (+ (self ::foo)
+         (reduce + xs)))
+  #+end_src
+
+  Like Python methods, the instance object on which the method is invoked
+  is explicitly added as the first argument.
+  In this example, we give this argument the conventional name ~self~.
+  However, there's nothing special about it.
+  You can call it whatever you want.
+
+  If you already have a function,
+  and you'd like to turn it into a method,
+  you can use the function ~method*~.
+  Here's the same example, using ~method*~ instead of ~method~:
+
+  #+begin_src clojure
+    (method* (fn [self & xs]
+               (+ (self ::foo)
+                  (reduce + xs))))
+  #+end_src
+
+  Note that if you just have a plain function
+  that does not expect the instance object as its first parameter,
+  there's no need to use ~method~ or ~method*~
+  — just add the function itself to the object.
+
+  We add a method to an object similar to the way we add properties:
+
+  #+begin_src clojure :noweb yes
+    (def obj
+      (map->object {::foo 1
+                    ::bar
+                      <<examples/method>>}))
+  #+end_src
+
+  and invoke them just like other functions on the object:
+
+  #+begin_src clojure
+    (obj ::bar 1 2 3)
+    ;; 7 (::foo + 1 + 2 + 3, where ::foo = 1)
+  #+end_src
+
+  We can also access the method as an attribute.
+  In this case, we'll get the Python analog of a "bound method".
+  I.e., a function(-like) which, when invoked,
+  invokes the method on the object which it was access on.
+  Here's an example of such a use:
+
+  #+begin_src clojure
+    (let [bar (obj ::bar)]
+      (map bar [1 2 3]))
+    ;; => (2 3 4)
+  #+end_src
+
+  This is because, in Objective,
+  methods are implemented using Objective [[properties][properties]].
+  Accessing a method property yields a function
+  which, when invoked, calls the underlying method function
+  with the appropriate instance as the first argument.
+
+  If you want to invoke a method with no arguments
+  (other than the implicit instance object),
+  you will need to wrap the call
+  in an extra set of paretheses to actually invoke it.
+
+  For example:
+
+  #+begin_src clojure
+    (obj ::bar)
+  #+end_src
+
+  will not invoke ~::bar~, but instead will return a "bound method".
+  To actually invoke ~::bar~ in this situation,
+  you need to wrap the expression in an "extra" pair of paretheses:
+
+  #+begin_src clojure
+    ((obj ::bar))
+    ;; => 1
+  #+end_src
+
+  The same holds true as well for invoking regular functions
+  with no arguments.

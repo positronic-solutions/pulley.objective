@@ -119,3 +119,17 @@
       (property-get- [self instance]
         (getter instance)))))
 
+
+;;;;;;;;;;;;;
+;; Methods ;;
+;;;;;;;;;;;;;
+
+(defn method*
+  ([f]
+    (property :get (fn [instance]
+                     (fn [& args]
+                       (apply f instance args))))))
+
+(defmacro method
+  ([& forms]
+    `(method* (fn ~@forms))))
