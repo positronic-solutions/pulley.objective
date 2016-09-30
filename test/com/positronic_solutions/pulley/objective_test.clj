@@ -39,3 +39,16 @@
           (is (= (apply obj1 ::bar (range n))
                  (apply obj2 ::foo ::bar (range n))
                  (apply + (range n)))))))))
+
+(deftest test-property
+  (let [obj1 (map->object {::foo 1
+                           ::bar (property :get (fn [instance]
+                                                  (instance ::foo)))
+                           ::baz (property :get (fn [instance]
+                                                  (-> (instance ::bar)
+                                                      (inc))))})]
+    (is (= (obj1 ::bar)
+           (obj1 ::foo)
+           1))
+    (is (= (obj1 ::baz))
+        2)))

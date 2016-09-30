@@ -58,6 +58,9 @@
     This is in-line with Python semantics,
     and makes it easier to distinguish between a missing attribute
     and an attribute whose value is ~nil~.
+
+  * Lookups are subject to property resolution.
+    See [[properties][Properties]] for more details.
 * Constructing Objects
   Objects are constructed via the ~map->object~ function.
   ~map->object~ expects a single argument — a map of attributes to values:
@@ -77,3 +80,76 @@
   that you use namespace-qualified keywords for attribute names.
   This will help ensure names do not collide.
   However, any valid map key can be used.
+* Properties
+  :PROPERTIES:
+  :CUSTOM_ID: properties
+  :END:
+
+  Properties allow the value of an attribute to be calculated.
+  For instance, you could calculate a value from other attributes
+  on an object.
+
+  Properties are constructed via the ~property~ function:
+
+  #+name: examples/property
+  #+begin_src clojure
+    (property :get (fn [instance]
+                     (inc (instance ::foo))))
+  #+end_src
+
+  This constructs a property whose value is always the increment
+  of the ~::foo~ attribute on the underlying object.
+
+  ~property~ expects a single keyword argument, ~:get~.
+  This argument must provide a function
+  that serves as the property's getter.
+  The getter function itself is passed a single argument:
+  the object on which the property was accessed.
+
+  Now that we know how to construct properties,
+  it is a simple matter to add one to an object:
+
+  #+begin_src clojure :noweb yes
+    (def obj
+      (map->object {::foo 1
+                    ::bar
+                      <<examples/property>>}))
+  #+end_src
+
+  We access a property just like other attributes:
+
+  #+begin_src clojure
+    (obj ::bar)
+    ;; => 2
+  #+end_src
+
+  Note, however, that property resolution
+  is performed only when the object is invoked like a function.
+  In the current version of Objective,
+  any other lookup methods (i.e., via ~get~)
+  will return the property object itself,
+  rather than the value returned by the getter.
+  It is highly likely this will change in the future.
+** Differences from Python Descriptors / Properties
+   Objective properties are similar to Python properties,
+   which are built on [[https://docs.python.org/3/howto/descriptor.html][Python descriptors]].
+   Descriptors provide a similar, though slightly more complex,
+   interface that supports essentially the same features as properties.
+   In the current version, Objective properties
+   are intended to provide a full replacement for Python descriptors,
+   though (like all Objective features) this is subject to change.
+
+   There are a few differences between the current implementation
+   of Objective properties and Python descriptors / properties:
+
+   * Resolution of Python descriptors only takes place
+     when the descriptor is on a (new-style) class.
+     Descriptors are just normal attribute values
+     when directly attached to an instance.
+     Objective does not currently support the notion of a class,
+     so we could not make this distinction even if we wanted to.
+   * Objective only supports getters in the current version.
+     Setters are not currently supported,
+     though they will likely be added in the near future.
+     Property deletion (Python's ~__delete__~ "magic method")
+     is also not supported at the moment.

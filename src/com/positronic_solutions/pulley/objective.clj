@@ -16,7 +16,8 @@
 ;; along with pulley.objective.  If not, see <http://www.gnu.org/licenses/>.
 (ns com.positronic-solutions.pulley.objective)
 
-(declare object-)
+(declare object-
+         property-get-)
 
 (deftype PersistentObject [attrs]
   clojure.lang.Associative
@@ -47,7 +48,8 @@
   clojure.lang.IFn
   (invoke [self k]
     (if (contains? self k)
-      (get self k)
+      (-> (get self k)
+          (property-get- self))
       (throw (new IllegalArgumentException (str "Attribute not found: " k)))))
   (invoke [self k arg]
     ((self k) arg))
@@ -97,3 +99,23 @@
 
 (defn map->object [attrs]
   (object- attrs))
+
+
+;;;;;;;;;;;;;;;;
+;; Properties ;;
+;;;;;;;;;;;;;;;;
+
+(defprotocol ^:private IProperty
+  (property-get- [self instance]))
+
+(extend-protocol IProperty
+  Object
+  (property-get- [self instance]
+    self))
+
+(defn property
+  ([& {getter :get}]
+    (reify IProperty
+      (property-get- [self instance]
+        (getter instance)))))
+
