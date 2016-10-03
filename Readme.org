@@ -1,3 +1,6 @@
+#+title: pulley.objective
+#+author: Nathan Davis
+
 * What is =pulley=?
   =pulley= is the Positronic utility libraries.
   It is a collection of relatively small, simple libraries
