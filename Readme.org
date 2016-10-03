@@ -6,11 +6,11 @@
   =pulley.objective= is an object library for Clojure.
   Inspired by Python, it provides an alternative to native Java objects.
   Just as Python objects are based on python ~dict~'s,
-  objects in =pulley.objective= are based on persistent maps.
+  Objective objects are based on persistent maps.
 
   Unlike Python, =pulley.objective= maintains Clojure's policy
   of utilizing persistent data types.
-  That is, an object in =pulley.objective= is immutable.
+  That is, an Objective object is immutable.
 * Status
   ~pulley.object~ is considered pre-alpha.
   Only the most rudimentary features have been implemented so far,
@@ -19,12 +19,12 @@
   Objects in =pulley.objective= are implemented
   by the ~pulley.objective.PersistentObject~ class.
   ~PersistentObject~ provides a map-compatible interface
-  that differs from Clojure's ~PersistentHashMap~/~PersistentSortedMap~
+  that differs from Clojure's ~PersistentHashMap~ / ~PersistentSortedMap~
   in the following ways:
 
   * When used as a function, a ~PersistentObject~ expects a key (attribute).
     If only the key is provided,
-    the value associated with the attribute is retured.
+    the value associated with that attribute is retured.
     If additional parameters are provided,
     the associated value is called
     with the additional parameters passed as arguments.
@@ -60,7 +60,7 @@
     and an attribute whose value is ~nil~.
 
   * Lookups are subject to property resolution.
-    See [[properties][Properties]] for more details.
+    See [[#properties][Properties]] for more details.
 * Constructing Objects
   Objects are constructed via the ~map->object~ function.
   ~map->object~ expects a single argument — a map of attributes to values:
@@ -88,7 +88,7 @@
   Properties allow the value of an attribute to be calculated.
   For instance, you could calculate a value from other attributes
   on an object.
-  Properties are also used to implement Objective [[methods][methods]].
+  Properties are also used to implement Objective [[#methods][methods]].
 
   Properties are constructed via the ~property~ function:
 
@@ -99,7 +99,7 @@
   #+end_src
 
   This constructs a property whose value is always the increment
-  of the ~::foo~ attribute on the underlying object.
+  of the ~::foo~ attribute on the instance object.
 
   ~property~ expects a single keyword argument, ~:get~.
   This argument must provide a function
@@ -161,12 +161,14 @@
 
   While any function on an object can be invoked as a method,
   such a function will not have access
-  to the object on which is was invoked (i.e., Java's ~this~).
+  to the object on which it was invoked (i.e., Java's ~this~).
   If you need access to this object,
-  you can use the ~method~ macro.
+  you can use an Objective method.
   Such a method can access other attributes and invoke other methods
   on the object.
 
+  The easiest way to construct an Objective method
+  is via the ~method~ macro.
   For example, here's a method that returns the sum
   of its arguments and the ~::foo~ attribute.
 
@@ -177,8 +179,8 @@
          (reduce + xs)))
   #+end_src
 
-  Like Python methods, the instance object on which the method is invoked
-  is explicitly added as the first argument.
+  Like Python methods, the instance object on which the method was invoked
+  is added at the front of the argument list.
   In this example, we give this argument the conventional name ~self~.
   However, there's nothing special about it.
   You can call it whatever you want.
@@ -217,7 +219,7 @@
 
   We can also access the method as an attribute.
   In this case, we'll get the Python analog of a "bound method".
-  I.e., a function(-like) which, when invoked,
+  I.e., a function(-like) object which, when invoked,
   invokes the method on the object which it was access on.
   Here's an example of such a use:
 
@@ -227,8 +229,8 @@
     ;; => (2 3 4)
   #+end_src
 
-  This is because, in Objective,
-  methods are implemented using Objective [[properties][properties]].
+  This is because Objective methods
+  are implemented using Objective [[#properties][properties]].
   Accessing a method property yields a function
   which, when invoked, calls the underlying method function
   with the appropriate instance as the first argument.
