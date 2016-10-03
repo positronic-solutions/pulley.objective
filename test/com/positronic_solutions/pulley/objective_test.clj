@@ -70,3 +70,14 @@
                  (* (obj1 ::multiple)
                     (reduce + (range n)))
                  (* 3 (reduce + (range n))))))))))
+
+(deftest test-assoc
+  (let [attrs {::foo 1}
+        obj   (map->object attrs)]
+    (is (= obj attrs))
+    (is (= (assoc obj ::foo 2)
+           (assoc attrs ::foo 2)))
+    (is (= (get (assoc obj ::foo 2) ::foo)
+           ((assoc obj ::foo 2) ::foo)
+           (get (assoc attrs ::foo 2) ::foo)
+           2))))
