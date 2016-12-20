@@ -133,3 +133,39 @@
 (defmacro method
   ([& forms]
     `(method* (fn ~@forms))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Object Constructors ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmacro object [& args]
+  (letfn [(parse-attrs [args]
+            (loop [args args
+                   parsed-spec {:attrs []}]
+              (if (empty? args)
+                ;; then (we're done => return accumulated attrs)
+                parsed-spec
+                ;; else (more args => parse next attribute)
+                (if (seq? (first args))
+                  ;; then (process method with form (<name> ...))
+                  (let [[name & method-spec] (first args)]
+                    (recur (rest args)
+                           (update parsed-spec :attrs
+                                   conj name `(method ~@method-spec))))
+                  ;; else (process attribute with form <name> <value>)
+                  (let [name (first args)
+                        args' (rest args)
+                        value (if (empty? args')
+                                ;; then (no value => error)
+                                (throw (new IllegalStateException (str "Malformed object expression:  No value provided for attribute " name)))
+                                ;; else (value provided => good to go)
+                                (first args'))]
+                    (recur (rest args')
+                           (update parsed-spec :attrs
+                                   conj name value)))))))]
+    (let [{:keys [attrs]} (parse-attrs args)]
+      `(map->object (hash-map ~@attrs)))))
+
+(defmacro defobject [name & args]
+  `(def ~name (object ~@args)))

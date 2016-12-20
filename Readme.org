@@ -65,24 +65,58 @@
   * Lookups are subject to property resolution.
     See [[#properties][Properties]] for more details.
 * Constructing Objects
-  Objects are constructed via the ~map->object~ function.
-  ~map->object~ expects a single argument — a map of attributes to values:
+** ~object~
+   The ~object~ macro provides a convenient way to specify an object.
+   Like a map, you can specify attributes using ~name value~ pairs.
+   But, you can also specify [[#methods][methods]] via forms
+   following the pattern ~(<name> <method-spec...>)~.
 
-  #+begin_src clojure
-    (map->object {::foo "this is the foo attribute"
-                  ::bar (fn [& args]
-                          (println "You invoked the bar method with the following arguments: " args))})
-  #+end_src
+   For example:
 
-  In the future, additonal arguments may be added for things such as:
-  * Superclass(es)
-  * Metaclass
-  * Additional metadata affecting object creation / features
+   #+begin_src clojure
+     (object ::foo "this is the foo attribute"
+             ::bar (fn [& args]
+                     (println "You invoked the bar function with the following arguments: " args))
+             ::baz (method [self & args]
+                     (println "You invoked method baz on " self " with " args))
+             ;; Short-hand method specification
+             (::baz' [self & args]
+               (println "You invoked method baz' on " self " with " args)))
+   #+end_src
+** ~defobject~
+   ~defobject~ provides a convenient way to construct a new object
+   and bind it to a var.
 
-  It is recommended (but not required)
-  that you use namespace-qualified keywords for attribute names.
-  This will help ensure names do not collide.
-  However, any valid map key can be used.
+   #+begin_src clojure
+     (defobject foo ...)
+   #+end_src
+
+   is simply short-hand for:
+
+   #+begin_src clojure
+     (def foo (object ...))
+   #+end_src
+** ~map->object~
+   Objects can also be constructed via the ~map->object~ function.
+   ~map->object~ expects a single argument — a map of attributes to values:
+
+   #+begin_src clojure
+     (map->object {::foo "this is the foo attribute"
+                   ::bar (fn [& args]
+                           (println "You invoked the bar function with the following arguments: " args))
+                   ::baz (method [self & args]
+                           (println "You invoked method baz on " self " with " args))})
+   #+end_src
+
+   In the future, additonal arguments may be added for things such as:
+   * Superclass(es)
+   * Metaclass
+   * Additional metadata affecting object creation / features
+
+   It is recommended (but not required)
+   that you use namespace-qualified keywords for attribute names.
+   This will help ensure names do not collide.
+   However, any valid map key can be used.
 * Properties
   :PROPERTIES:
   :CUSTOM_ID: properties

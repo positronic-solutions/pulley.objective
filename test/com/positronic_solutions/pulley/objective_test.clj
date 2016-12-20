@@ -73,16 +73,23 @@
   (let [obj1 (map->object {::multiple 3
                            ::method (method [self & xs]
                                       (* (self ::multiple)
-                                         (reduce + xs)))})]
+                                         (reduce + xs)))})
+        obj2 (object ::multiple 3
+                     (::method [self & xs]
+                       (* (self ::multiple)
+                          (reduce + xs))))]
     (testing "invocation"
       (is (= (obj1 ::method 1)
+             (obj2 ::method 1)
              3))
       (is (= (obj1 ::method 1 2)
+             (obj2 ::method 1 2)
              9)))
     (testing "apply"
       (doseq [n (range 1 30)]
         (testing n
           (is (= (apply obj1 ::method (range n))
+                 (apply obj2 ::method (range n))
                  (* (obj1 ::multiple)
                     (reduce + (range n)))
                  (* 3 (reduce + (range n))))))))))
