@@ -16,8 +16,18 @@
 ;; along with pulley.objective.  If not, see <http://www.gnu.org/licenses/>.
 (ns com.positronic-solutions.pulley.objective)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Forward Declarations ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (declare object-
          property-get-)
+
+
+;;;;;;;;;;;;;;;;;;;;;;
+;; PersistendObject ;;
+;;;;;;;;;;;;;;;;;;;;;;
 
 (deftype PersistentObject [attrs]
   clojure.lang.Associative
@@ -94,12 +104,6 @@
   (applyTo [self args]
     (clojure.lang.AFn/applyToHelper self args)))
 
-(defn- object- [attrs]
-  (new PersistentObject attrs))
-
-(defn map->object [attrs]
-  (object- attrs))
-
 
 ;;;;;;;;;;;;;;;;
 ;; Properties ;;
@@ -138,6 +142,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Object Constructors ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn- object- [attrs]
+  (new PersistentObject attrs))
+
+(defn map->object [attrs]
+  (object- attrs))
 
 (defmacro object [& args]
   (letfn [(parse-attrs [args]
