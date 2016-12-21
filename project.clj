@@ -15,7 +15,7 @@
 ;; You should have received a copy of the GNU Lesser General Public License
 ;; along with pulley.objective.  If not, see <http://www.gnu.org/licenses/>.
 
-(defproject pulley.objective "0.1.0-SNAPSHOT"
+(defproject com.positronic-solutions/pulley.objective "0.1.0-SNAPSHOT"
   :description "Python-style object library for Clojure"
   :url "https://github.com/positronic-solutions/pulley.objective"
   :license {:name "GNU Lesser General Public License, v. 3 or later"
